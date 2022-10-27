@@ -12,20 +12,23 @@ final class UsersViewModel: ObservableObject {
     @Published var users: [User] = []
     @Published var hasError = false
     @Published var error: UserError?
+    @Published private(set) var isRefreshing = false
+    
     
     
     func fetchUsers() {
         
+        isRefreshing = true
         hasError = false
         
-        let usersUrlString = "https://jsonplaceholder.typicode.com/users"
+        let usersUrlString = "https://jsonplaceholder.typicode.com/usersx"
         
         if let url = URL(string: usersUrlString) {
             
             URLSession.shared.dataTask(with: url) { data, response, error in
                 // TODO: Handle returning data on the Main thread
                 
-                DispatchQueue.main.async {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 1.5 ) {
                     
                     if let error = error {
                         // TODO: handel error
@@ -52,6 +55,7 @@ final class UsersViewModel: ObservableObject {
                         }
                         
                     }
+                    self.isRefreshing = false 
                     
                 }
        
