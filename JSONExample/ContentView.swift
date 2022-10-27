@@ -8,14 +8,24 @@
 import SwiftUI
 
 struct ContentView: View {
+    
+    @StateObject private var vm = UsersViewModel()
+    
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundColor(.accentColor)
-            Text("Hello, world!")
+        NavigationView {
+            ZStack {
+                List {
+                    ForEach(vm.users, id: \.id) { user in
+                        UserView(user: user)
+                            .listRowSeparator(.hidden)
+                    }
+                }
+                .listStyle(.plain)
+                .navigationTitle("Users")
+            }
+            .onAppear(perform: vm.fetchUsers)
         }
-        .padding()
+        
     }
 }
 
