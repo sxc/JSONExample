@@ -9,7 +9,7 @@ import Foundation
 
 final class UsersViewModel: ObservableObject {
     
-    @Published var users: [User] = []
+//    @Published var users: [User] = []
     @Published var hasError = false
     @Published var error: UserError?
     @Published private(set) var isRefreshing = false
@@ -21,14 +21,21 @@ final class UsersViewModel: ObservableObject {
         isRefreshing = true
         hasError = false
         
-        let usersUrlString = "https://jsonplaceholder.typicode.com/usersx"
+//        let usersUrlString = "https://jsonplaceholder.typicode.com/users"
+//        let usersUrlString = "https://jsonplaceholder.typicode.com/users"
+//        let usersUrlString = "https://jsonplaceholder.typicode.com/users"
+        let lichessUrlString = "https://lichess.org/api/user/Unkreativ3"
+//        let user1UrlString = "https://jsonplaceholder.typicode.com/users/1"
+//        let topplayerUrlString = "https://lichess.org/api/player"
         
-        if let url = URL(string: usersUrlString) {
+    
+        
+        if let url = URL(string: lichessUrlString) {
             
             URLSession.shared.dataTask(with: url) { data, response, error in
                 // TODO: Handle returning data on the Main thread
                 
-                DispatchQueue.main.asyncAfter(deadline: .now() + 1.5 ) {
+                DispatchQueue.main.async {
                     
                     if let error = error {
                         // TODO: handel error
@@ -40,10 +47,12 @@ final class UsersViewModel: ObservableObject {
                         decoder.keyDecodingStrategy = .convertFromSnakeCase // Hnadle properties that look like first_name > firstName
                         
                         if let data = data,
-                           let users = try? decoder.decode([User].self, from: data) {
+                           let user = try? decoder.decode(User.self, from: data) {
                             // TODO: handel setting the data
-                            self.users = users
-                            print(users)
+//                            self.users = users
+                            
+                            let user = try decoder.decode(User.self, from: data)
+                            print(user)
                             
                             
                         } else {

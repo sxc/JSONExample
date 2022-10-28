@@ -17,13 +17,17 @@ struct ContentView: View {
                 if vm.isRefreshing {
                     ProgressView()
                 } else {
-                    List {
-                        ForEach(vm.users, id: \.id) { user in
-                            UserView(user: user)
-                                .listRowSeparator(.hidden)
-                        }
+//                    List {
+//                        ForEach(vm.users, id: \.id) { user in
+//                            UserView(user: user)
+//                                .listRowSeparator(.hidden)
+//                        }
+//                    }
+//                    .listStyle(.plain)
+                    VStack {
+                        Text($vm.user.id)
+//                        Text(vm.user.username)
                     }
-                    .listStyle(.plain)
                     .navigationTitle("Users")
                     }
                 }
